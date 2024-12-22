@@ -36,6 +36,10 @@ def svd(args):
             return torch.float16
         if p == "bf16":
             return torch.bfloat16
+        if p == 'float8_e4m3fn':
+            return torch.float8_e4m3fn
+        if p == 'float8_e5m2':
+            return torch.float8_e5m2
         return None
 
     assert args.v2 != args.sdxl or (

@@ -98,7 +98,7 @@ def on_ui_tabs():
                     sml_filename = gr.Textbox(label="filename(option)",lines=1,visible =True,interactive  = True)  
                 sml_metasettings = gr.Radio(value = "create new",choices = ["create new","create new without output_name", "merge","save all", "use first lora"], label="metadata")
                 with gr.Row(equal_height=False):
-                    save_precision = gr.Radio(label = "save precision",choices=["float","fp16","bf16"],value = "fp16",type="value")
+                    save_precision = gr.Radio(label = "save precision",choices=["float","fp16","bf16","float8_e4m3fn","float8_e5m2"],value = "fp16",type="value")
                     calc_precision = gr.Radio(label = "calc precision(fp16:cuda only)" ,choices=["float","fp16","bf16"],value = "float",type="value")
                     device = gr.Radio(label = "device",choices=["cuda","cpu"],value = "cuda",type="value")
             with gr.Column():
@@ -1013,6 +1013,10 @@ def str_to_dtype(p):
     return torch.float16
   if p == 'bf16':
     return torch.bfloat16
+  if p == 'float8_e4m3fn':
+    return torch.float8_e4m3fn
+  if p == 'float8_e5m2':
+    return torch.float8_e5m2
   return None
 
 

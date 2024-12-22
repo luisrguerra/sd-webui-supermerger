@@ -1381,7 +1381,7 @@ def add_training_arguments(parser: argparse.ArgumentParser, support_dreambooth: 
   parser.add_argument("--output_name", type=str, default=None,
                       help="base name of trained model file / 学習後のモデルの拡張子を除くファイル名")
   parser.add_argument("--save_precision", type=str, default=None,
-                      choices=[None, "float", "fp16", "bf16"], help="precision in saving / 保存時に精度を変更して保存する")
+                      choices=[None, "float", "fp16", "bf16","float8_e4m3fn","float8_e5m2"], help="precision in saving / 保存時に精度を変更して保存する")
   parser.add_argument("--save_every_n_epochs", type=int, default=None,
                       help="save checkpoint every N epochs / 学習中のモデルを指定エポックごとに保存する")
   parser.add_argument("--save_n_epoch_ratio", type=int, default=None,
@@ -1590,6 +1590,10 @@ def prepare_dtype(args: argparse.Namespace):
     save_dtype = torch.bfloat16
   elif args.save_precision == "float":
     save_dtype = torch.float32
+  elif args.save_precision == "float8_e4m3fn":
+    save_dtype = torch.float8_e4m3fn
+  elif args.save_precision == "float8_e5m2":
+    save_dtype = torch.float8_e5m2
 
   return weight_dtype, save_dtype
 

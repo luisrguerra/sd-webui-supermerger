@@ -174,6 +174,10 @@ def merge(args):
             return torch.float16
         if p == "bf16":
             return torch.bfloat16
+        if p == 'float8_e4m3fn':
+            return torch.float8_e4m3fn
+        if p == 'float8_e5m2':
+            return torch.float8_e5m2
         return None
 
     merge_dtype = str_to_dtype(args.precision)
@@ -216,14 +220,14 @@ def setup_parser() -> argparse.ArgumentParser:
         "--save_precision",
         type=str,
         default=None,
-        choices=[None, "float", "fp16", "bf16"],
+        choices=[None, "float", "fp16", "bf16","float8_e4m3fn","float8_e5m2"],
         help="precision in saving, same to merging if omitted / 保存時に精度を変更して保存する、省略時はマージ時の精度と同じ",
     )
     parser.add_argument(
         "--precision",
         type=str,
         default="float",
-        choices=["float", "fp16", "bf16"],
+        choices=["float", "fp16", "bf16","float8_e4m3fn","float8_e5m2"],
         help="precision in merging (float is recommended) / マージの計算時の精度（floatを推奨）",
     )
     parser.add_argument(

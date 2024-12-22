@@ -26,6 +26,18 @@ def to_half(sd):
             sd[key] = sd[key].half()
     return sd
 
+def to_float8_e4m3fn(sd):
+    for key in sd.keys():
+        if 'model' in key and sd[key].dtype in {torch.float16,torch.float32, torch.float64, torch.bfloat16}:
+            sd[key] = sd[key].to(torch.float8_e4m3fn)
+    return sd
+
+def to_float8_e5m2(sd):
+    for key in sd.keys():
+        if 'model' in key and sd[key].dtype in {torch.float16,torch.float32, torch.float64, torch.bfloat16}:
+            sd[key] = sd[key].to(torch.float8_e5m2)
+    return sd
+
 def savemodel(state_dict,currentmodel,fname,savesets,metadata={}):
     other_dict = {}
     if state_dict is None:
@@ -77,6 +89,10 @@ def savemodel(state_dict,currentmodel,fname,savesets,metadata={}):
 
     if "fp16" in savesets:
         pre = ".fp16"
+    elif "float8_e4m3fn" in savesets:
+        pre = ".float8_e4m3fn"
+    elif "float8_e5m2" in savesets:
+        pre = ".float8_e5m2"
     else:pre = ""
     ext = ".safetensors" if "safetensors" in savesets else ".ckpt"
 
